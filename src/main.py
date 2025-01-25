@@ -1,13 +1,11 @@
 import cherrypy
 import os
 import random
-from mako.lookup import TemplateLookup
+import page_index
+import page_signup
+import page_posts
 
-#Set up the template lookup
-srcdir = os.path.abspath(os.path.dirname(__file__))
-lookup = TemplateLookup(directories=[os.path.join(srcdir, "../html")])
-
-#List of first names to use for the greeting
+# List of first names for the greeting
 FIRST_NAMES = [
     "Emilia", "Mia", "Norma", "Mustafa", "Talia",
     "Axel", "Aiden", "Rosa", "Zaki", "Stevie"
@@ -16,55 +14,35 @@ FIRST_NAMES = [
 class App:
     @cherrypy.expose
     def index(self):
-        #Retrieve or set a random name for the session
+        # Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
-        template = lookup.get_template("index.html") # Render the index page
-        return template.render(title="Home Page", name=random_name)
+        return page_index.render_index(random_name)
 
     @cherrypy.expose
     def signup(self):
-        #Retrieve or set a random name for the session
+        # Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
-        template = lookup.get_template("signup.html")
-        return template.render(title="Signup", name=random_name)
+        return page_signup.render_signup(random_name)
 
     @cherrypy.expose
     def posts(self):
-        #Generate random posts from a list of random users
-        users = [
-            "Maksymilian Hewitt", "Chad Green", "Zakaria Glenn", "Salman Erickson",
-            "Khadija Rosario", "Jemima Humphrey", "Melvin Kirby", "Lowri Henry",
-            "Shawn Lowery", "Gertrude Bradford"
-        ]
-        posts = [
-            {
-                "user": user,
-                "thumbnail": f"/html/images/avatar{i + 1}.png",
-                "time_ago": f"{random.randint(1, 364)} days ago",
-                "views": random.randint(0, 1000),
-            }
-            for i, user in enumerate(users)
-        ]
-        #Retrieve or set a random name for the session
+        # Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
-        template = lookup.get_template("posts.html")
-        return template.render(title="Posts Page", posts=posts, name=random_name)
+        return page_posts.render_posts(random_name)
 
     def get_or_set_session_name(self):
-        """
-        Retrieve the session name or set it if it doesn't exist.
-        """
         if "name" not in cherrypy.session:
-            #Generate a random name and store it in the session
             cherrypy.session["name"] = random.choice(FIRST_NAMES)
         return cherrypy.session["name"]
 
 if __name__ == "__main__":
+    # CherryPy configuration
+    srcdir = os.path.abspath(os.path.dirname(__file__))
     cherrypy.config.update({
-        "tools.sessions.on": True,               #Enable session management
-        "tools.sessions.storage_type": "ram",    #Store session data in RAM
-        "tools.sessions.timeout": 5,             #minutes until session timeout
-        "tools.sessions.persistent": False,      #make the cookies expire when the browser is closed
+        "tools.sessions.on": True,                # Enable session management
+        "tools.sessions.storage_type": "ram",     # Store sessions in RAM
+        "tools.sessions.timeout": 5,              # Minutes until session timeout
+        "tools.sessions.persistent": False,       # Expire cookies when the browser closes
     })
     cherrypy.quickstart(
         App(),

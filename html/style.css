@@ -1,11 +1,13 @@
-body {
+body 
+{
     font-family: 'Roboto', 'Libre Franklin', Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
 }
 
-.header {
+.header 
+{
     background-color: blue;
     color: white;
     padding: 20px;
@@ -20,33 +22,39 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.navigation {
+.navigation 
+{
     display: flex;
     gap: 15px;
 }
 
-.nav-link {
+.nav-link 
+{
     color: white;
     text-decoration: none;
     font-weight: bold;
 }
 
-.nav-link:hover {
+.nav-link:hover 
+{
     text-decoration: underline;
 }
 
-.greeting {
+.greeting 
+{
     font-size: 18px;
     margin-left: auto;
     margin-right: 40px;
     white-space: nowrap;
 }
 
-.content {
+.content 
+{
     padding: 100px 20px;
 }
 
-.signup-popup {
+.signup-popup 
+{
     background-color: white;
     width: 300px;
     margin: 100px auto;
@@ -56,7 +64,8 @@ body {
     text-align: center;
 }
 
-.signup-popup input {
+.signup-popup input 
+{
     display: block;
     width: 100%;
     padding: 10px;
@@ -65,14 +74,16 @@ body {
     margin-bottom: 15px;
 }
 
-.signup-popup label {
+.signup-popup label 
+{
     text-align: left;
     font-size: 14px;
     margin-bottom: 5px;
     display: block;
 }
 
-.signup-popup button {
+.signup-popup button 
+{
     padding: 10px 20px;
     background-color: blue;
     color: white;
@@ -81,7 +92,8 @@ body {
     cursor: pointer;
 }
 
-.posts-container {
+.posts-container 
+{
     max-width: 800px;
     max-height: 500px; 
     overflow-y: auto; 
@@ -92,7 +104,8 @@ body {
     margin: 20px auto;
 }
 
-.post-item {
+.post-item 
+{
     display: flex;
     align-items: center;
     margin-bottom: 10px; 
@@ -101,7 +114,8 @@ body {
     border-radius: 5px; 
 }
 
-.post-item img {
+.post-item img 
+{
     width: 64px;
     height: 64px;
     margin-right: 10px;

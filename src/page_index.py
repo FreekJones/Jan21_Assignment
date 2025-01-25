@@ -4,9 +4,9 @@ import os
 srcdir = os.path.abspath(os.path.dirname(__file__))
 lookup = TemplateLookup(directories=[os.path.join(srcdir, "../html")])
 
-def get():
+def render_index(name):
     template = lookup.get_template("index.html")
-    return template.render(title="Home Page", name="NAME")
+    return template.render(title="Home Page", name=name)
 
 
 #I used the following resources to help me with this project:
