@@ -1,5 +1,6 @@
 import cherrypy
-import os
+import os.path
+import random
 from mako.lookup import TemplateLookup
 
 # Configure Mako template lookup
