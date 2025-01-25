@@ -10,6 +10,7 @@ def get():
 
 
 #I used the following resources to help me with this project:
+#https://docs.cherrypy.dev/en/latest/pkg/cherrypy.lib.sessions.html
 #https://www.w3schools.com/html/
 #https://www.w3schools.com/css/
 #https://www.w3schools.com/html/html_styles.asp

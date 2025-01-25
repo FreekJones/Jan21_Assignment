@@ -16,18 +16,15 @@ FIRST_NAMES = [
 class App:
     @cherrypy.expose
     def index(self):
-        # Check if a name exists in the session, otherwise pick a random name
-        if "name" not in cherrypy.session:
-            cherrypy.session["name"] = random.choice(FIRST_NAMES)
-        random_name = cherrypy.session["name"]
-
+        # Retrieve or set a random name for the session
+        random_name = self.get_or_set_session_name()
         template = lookup.get_template("index.html")
         return template.render(title="Home Page", name=random_name)
 
     @cherrypy.expose
     def signup(self):
-        # Use the name stored in the session
-        random_name = cherrypy.session.get("name", random.choice(FIRST_NAMES))
+        # Retrieve or set a random name for the session
+        random_name = self.get_or_set_session_name()
         template = lookup.get_template("signup.html")
         return template.render(title="Signup", name=random_name)
 
@@ -48,15 +45,26 @@ class App:
             }
             for i, user in enumerate(users)
         ]
-        # Use the name stored in the session
-        random_name = cherrypy.session.get("name", random.choice(FIRST_NAMES))
+        # Retrieve or set a random name for the session
+        random_name = self.get_or_set_session_name()
         template = lookup.get_template("posts.html")
         return template.render(title="Posts Page", posts=posts, name=random_name)
 
+    def get_or_set_session_name(self):
+        """
+        Retrieve the session name or set it if it doesn't exist.
+        """
+        if "name" not in cherrypy.session:
+            # Generate a random name and store it in the session
+            cherrypy.session["name"] = random.choice(FIRST_NAMES)
+        return cherrypy.session["name"]
+
 if __name__ == "__main__":
     cherrypy.config.update({
-        "tools.sessions.on": True,  # Enable session management
-        "tools.sessions.storage_type": "memory",  # Store sessions in memory
+        "tools.sessions.on": True,                # Enable session management
+        "tools.sessions.storage_type": "ram",     # Use in-memory session storage
+        "tools.sessions.timeout": 5,             # Session timeout in minutes
+        "tools.sessions.persistent": False,      # Session cookie expires on browser close
     })
     cherrypy.quickstart(
         App(),
@@ -68,8 +76,8 @@ if __name__ == "__main__":
             }
         },
     )
-
 #I used the following resources to help me with this project:
+#https://docs.cherrypy.dev/en/latest/pkg/cherrypy.lib.sessions.html
 #https://www.w3schools.com/html/
 #https://www.w3schools.com/css/
 #https://www.w3schools.com/html/html_styles.asp
