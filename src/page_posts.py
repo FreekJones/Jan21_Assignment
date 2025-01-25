@@ -2,7 +2,6 @@ from mako.lookup import TemplateLookup
 import os
 import random
 
-# Configure Mako template lookup
 srcdir = os.path.abspath(os.path.dirname(__file__))
 lookup = TemplateLookup(directories=[os.path.join(srcdir, "../html")])
 
