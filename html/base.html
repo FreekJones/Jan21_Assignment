@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title}</title>
+    <link rel="stylesheet" href="/html/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <nav class="navigation">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/signup" class="nav-link">Signup</a>
+            <a href="/posts" class="nav-link">Posts</a>
+        </nav>
+        <span class="greeting">Hello, ${name}</span>
+    </div>
+    <div class="content">
+        ${self.body()}
+    </div>
+</body>
+</html>
