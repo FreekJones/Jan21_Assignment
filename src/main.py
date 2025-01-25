@@ -16,15 +16,18 @@ FIRST_NAMES = [
 class App:
     @cherrypy.expose
     def index(self):
-        # Choose a random first name for the greeting
-        random_name = random.choice(FIRST_NAMES)
+        # Check if a name exists in the session, otherwise pick a random name
+        if "name" not in cherrypy.session:
+            cherrypy.session["name"] = random.choice(FIRST_NAMES)
+        random_name = cherrypy.session["name"]
+
         template = lookup.get_template("index.html")
         return template.render(title="Home Page", name=random_name)
 
     @cherrypy.expose
     def signup(self):
-        # Choose a random first name for the greeting
-        random_name = random.choice(FIRST_NAMES)
+        # Use the name stored in the session
+        random_name = cherrypy.session.get("name", random.choice(FIRST_NAMES))
         template = lookup.get_template("signup.html")
         return template.render(title="Signup", name=random_name)
 
@@ -45,12 +48,16 @@ class App:
             }
             for i, user in enumerate(users)
         ]
-        # Choose a random first name for the greeting
-        random_name = random.choice(FIRST_NAMES)
+        # Use the name stored in the session
+        random_name = cherrypy.session.get("name", random.choice(FIRST_NAMES))
         template = lookup.get_template("posts.html")
         return template.render(title="Posts Page", posts=posts, name=random_name)
 
 if __name__ == "__main__":
+    cherrypy.config.update({
+        "tools.sessions.on": True,  # Enable session management
+        "tools.sessions.storage_type": "memory",  # Store sessions in memory
+    })
     cherrypy.quickstart(
         App(),
         "/",
