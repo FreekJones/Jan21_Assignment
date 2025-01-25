@@ -94,8 +94,11 @@ body {
 
 .post-item {
     display: flex;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+    align-items: center;
+    margin-bottom: 10px; /* Space between posts */
+    padding: 10px; /* Inner spacing inside the border */
+    border: 2px solid black; /* Full black border */
+    border-radius: 5px; /* Optional: Rounded corners */
 }
 
 .post-item img {

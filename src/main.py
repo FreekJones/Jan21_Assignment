@@ -3,7 +3,7 @@ import os
 import random
 from mako.lookup import TemplateLookup
 
-# Configure Mako template lookup
+# Set up the template lookup
 srcdir = os.path.abspath(os.path.dirname(__file__))
 lookup = TemplateLookup(directories=[os.path.join(srcdir, "../html")])
 
@@ -18,7 +18,7 @@ class App:
     def index(self):
         # Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
-        template = lookup.get_template("index.html")
+        template = lookup.get_template("index.html") # Render the index page
         return template.render(title="Home Page", name=random_name)
 
     @cherrypy.expose
@@ -30,7 +30,7 @@ class App:
 
     @cherrypy.expose
     def posts(self):
-        # Generate random posts
+        # Generate random posts from a list of random users
         users = [
             "Maksymilian Hewitt", "Chad Green", "Zakaria Glenn", "Salman Erickson",
             "Khadija Rosario", "Jemima Humphrey", "Melvin Kirby", "Lowri Henry",
@@ -40,7 +40,7 @@ class App:
             {
                 "user": user,
                 "thumbnail": f"/html/images/avatar{i + 1}.png",
-                "time_ago": f"{random.randint(1, 30)} days ago",
+                "time_ago": f"{random.randint(1, 364)} days ago",
                 "views": random.randint(0, 1000),
             }
             for i, user in enumerate(users)
