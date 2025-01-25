@@ -3,11 +3,11 @@ import os
 import random
 from mako.lookup import TemplateLookup
 
-# Set up the template lookup
+#Set up the template lookup
 srcdir = os.path.abspath(os.path.dirname(__file__))
 lookup = TemplateLookup(directories=[os.path.join(srcdir, "../html")])
 
-# List of first names to use for the greeting
+#List of first names to use for the greeting
 FIRST_NAMES = [
     "Emilia", "Mia", "Norma", "Mustafa", "Talia",
     "Axel", "Aiden", "Rosa", "Zaki", "Stevie"
@@ -16,21 +16,21 @@ FIRST_NAMES = [
 class App:
     @cherrypy.expose
     def index(self):
-        # Retrieve or set a random name for the session
+        #Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
         template = lookup.get_template("index.html") # Render the index page
         return template.render(title="Home Page", name=random_name)
 
     @cherrypy.expose
     def signup(self):
-        # Retrieve or set a random name for the session
+        #Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
         template = lookup.get_template("signup.html")
         return template.render(title="Signup", name=random_name)
 
     @cherrypy.expose
     def posts(self):
-        # Generate random posts from a list of random users
+        #Generate random posts from a list of random users
         users = [
             "Maksymilian Hewitt", "Chad Green", "Zakaria Glenn", "Salman Erickson",
             "Khadija Rosario", "Jemima Humphrey", "Melvin Kirby", "Lowri Henry",
@@ -45,7 +45,7 @@ class App:
             }
             for i, user in enumerate(users)
         ]
-        # Retrieve or set a random name for the session
+        #Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
         template = lookup.get_template("posts.html")
         return template.render(title="Posts Page", posts=posts, name=random_name)
@@ -55,16 +55,16 @@ class App:
         Retrieve the session name or set it if it doesn't exist.
         """
         if "name" not in cherrypy.session:
-            # Generate a random name and store it in the session
+            #Generate a random name and store it in the session
             cherrypy.session["name"] = random.choice(FIRST_NAMES)
         return cherrypy.session["name"]
 
 if __name__ == "__main__":
     cherrypy.config.update({
-        "tools.sessions.on": True,                # Enable session management
-        "tools.sessions.storage_type": "ram",     # Use in-memory session storage
-        "tools.sessions.timeout": 5,             # Session timeout in minutes
-        "tools.sessions.persistent": False,      # Session cookie expires on browser close
+        "tools.sessions.on": True,               #Enable session management
+        "tools.sessions.storage_type": "ram",    #Store session data in RAM
+        "tools.sessions.timeout": 5,             #minutes until session timeout
+        "tools.sessions.persistent": False,      #make the cookies expire when the browser is closed
     })
     cherrypy.quickstart(
         App(),
