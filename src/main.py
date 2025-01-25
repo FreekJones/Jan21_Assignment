@@ -1,5 +1,5 @@
 import cherrypy
-import os.path
+import os
 import random
 from mako.lookup import TemplateLookup
 
@@ -7,19 +7,30 @@ from mako.lookup import TemplateLookup
 srcdir = os.path.abspath(os.path.dirname(__file__))
 lookup = TemplateLookup(directories=[os.path.join(srcdir, "../html")])
 
+# List of first names to use for the greeting
+FIRST_NAMES = [
+    "Emilia", "Mia", "Norma", "Mustafa", "Talia",
+    "Axel", "Aiden", "Rosa", "Zaki", "Stevie"
+]
+
 class App:
     @cherrypy.expose
     def index(self):
+        # Choose a random first name for the greeting
+        random_name = random.choice(FIRST_NAMES)
         template = lookup.get_template("index.html")
-        return template.render(title="Home Page", name="NAME")
+        return template.render(title="Home Page", name=random_name)
 
     @cherrypy.expose
     def signup(self):
+        # Choose a random first name for the greeting
+        random_name = random.choice(FIRST_NAMES)
         template = lookup.get_template("signup.html")
-        return template.render(title="Signup", name="NAME")
+        return template.render(title="Signup", name=random_name)
 
     @cherrypy.expose
     def posts(self):
+        # Generate random posts
         users = [
             "Maksymilian Hewitt", "Chad Green", "Zakaria Glenn", "Salman Erickson",
             "Khadija Rosario", "Jemima Humphrey", "Melvin Kirby", "Lowri Henry",
@@ -34,8 +45,10 @@ class App:
             }
             for i, user in enumerate(users)
         ]
+        # Choose a random first name for the greeting
+        random_name = random.choice(FIRST_NAMES)
         template = lookup.get_template("posts.html")
-        return template.render(title="Posts Page", posts=posts, name="NAME")
+        return template.render(title="Posts Page", posts=posts, name=random_name)
 
 if __name__ == "__main__":
     cherrypy.quickstart(
