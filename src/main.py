@@ -36,13 +36,12 @@ class App:
         return cherrypy.session["name"]
 
 if __name__ == "__main__":
-    # CherryPy configuration
     srcdir = os.path.abspath(os.path.dirname(__file__))
     cherrypy.config.update({
-        "tools.sessions.on": True,                # Enable session management
-        "tools.sessions.storage_type": "ram",     # Store sessions in RAM
-        "tools.sessions.timeout": 5,              # Minutes until session timeout
-        "tools.sessions.persistent": False,       # Expire cookies when the browser closes
+        "tools.sessions.on": True,                #Enable session management
+        "tools.sessions.storage_type": "ram",     #Store sessions in RAM
+        "tools.sessions.timeout": 5,              #Minutes until session timeout
+        "tools.sessions.persistent": False,       #Expire cookies when the browser closes
     })
     cherrypy.quickstart(
         App(),
