@@ -82,11 +82,14 @@ body {
 }
 
 .posts-container {
-    max-width: 600px;
-    margin: 20px auto;
+    max-width: 800px;
+    max-height: 500px; /* Set a fixed height to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
     padding: 10px;
     background-color: white;
     border-radius: 8px;
+    border: 1px solid #ccc; /* Optional: border for a clean look */
+    margin: 20px auto;
 }
 
 .post-item {
