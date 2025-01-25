@@ -6,8 +6,8 @@ import page_index
 import page_signup
 import page_posts
 
-class App:
-    @cherrypy.expose
+class App:            #Main class
+    @cherrypy.expose  #Home page
     def index(self):
         return page_index.get()
     
