@@ -14,19 +14,16 @@ FIRST_NAMES = [
 class App:
     @cherrypy.expose
     def index(self):
-        # Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
         return page_index.render_index(random_name)
 
     @cherrypy.expose
     def signup(self):
-        # Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
         return page_signup.render_signup(random_name)
 
     @cherrypy.expose
     def posts(self):
-        # Retrieve or set a random name for the session
         random_name = self.get_or_set_session_name()
         return page_posts.render_posts(random_name)
 
@@ -38,10 +35,10 @@ class App:
 if __name__ == "__main__":
     srcdir = os.path.abspath(os.path.dirname(__file__))
     cherrypy.config.update({
-        "tools.sessions.on": True,                #Enable session management
-        "tools.sessions.storage_type": "ram",     #Store sessions in RAM
-        "tools.sessions.timeout": 5,              #Minutes until session timeout
-        "tools.sessions.persistent": False,       #Expire cookies when the browser closes
+        "tools.sessions.on": True,
+        "tools.sessions.storage_type": "ram",
+        "tools.sessions.timeout": 5,
+        "tools.sessions.persistent": False,
     })
     cherrypy.quickstart(
         App(),

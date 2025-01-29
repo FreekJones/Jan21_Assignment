@@ -1,23 +1,90 @@
 <%inherit file="base.html" />
 <%block name="body">
     <div class="signup-popup">
-        <h2>Signup to be Freek Jones' friend</h2>
-        <form>
+        <h2>Signup to be Freek Jones' Friend</h2>
+        <form id="signupForm" onsubmit="return validateSignup(event)">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email">
+            <input type="email" id="email" name="email" placeholder="Enter your email">
             
             <label for="real-name">Real Name</label>
-            <input type="text" id="real-name" name="real-name">
+            <input type="text" id="realName" name="realName" placeholder="Enter your real name">
             
             <label for="password">Password</label>
-            <input type="password" id="password" name="password">
+            <input type="password" id="password" name="password" placeholder="Enter your password">
             
             <label for="dob">Date of Birth</label>
             <input type="date" id="dob" name="dob">
             
             <button type="submit">Sign Up</button>
         </form>
+        <div id="errorMessages" style="color: red; margin-top: 10px;"></div>
     </div>
+
+    <script>
+        function validateSignup(event) {
+            // Prevent the form from submitting
+            event.preventDefault();
+
+            // Get input values
+            const email = document.getElementById('email').value.trim();
+            const realName = document.getElementById('realName').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const dob = document.getElementById('dob').value.trim();
+            const errorMessages = document.getElementById('errorMessages');
+
+            // Clear previous error messages
+            errorMessages.innerHTML = '';
+
+            let isValid = true;
+            let errors = [];
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email) {
+                errors.push("Email is required.");
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                errors.push("Please enter a valid email address.");
+                isValid = false;
+            }
+
+            // Validate real name
+            if (!realName) {
+                errors.push("Real name is required.");
+                isValid = false;
+            }
+
+            // Validate password
+            if (!password) {
+                errors.push("Password is required.");
+                isValid = false;
+            }
+
+            // Validate date of birth and age
+            if (!dob) {
+                errors.push("Date of birth is required.");
+                isValid = false;
+            } else {
+                const today = Date.now();
+                const birthDate = new Date(dob).getTime();
+                const ageInMilliseconds = today - birthDate;
+                const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
+
+                if (ageInYears < 13) {
+                    errors.push("You must be at least 13 years old to sign up.");
+                    isValid = false;
+                }
+            }
+
+            // Display errors if any
+            if (!isValid) {
+                errorMessages.innerHTML = errors.join("<br>");
+            }
+
+            // Return false to prevent form submission when invalid
+            return false;
+        }
+    </script>
 </%block>
 
 <!--#I used the following resources to help me with this project:

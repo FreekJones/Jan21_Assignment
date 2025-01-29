@@ -5,6 +5,9 @@ srcdir = os.path.abspath(os.path.dirname(__file__))
 lookup = TemplateLookup(directories=[os.path.join(srcdir, "../html")])
 
 def render_signup(name):
+    """
+    Render the signup page with the given name.
+    """
     template = lookup.get_template("signup.html")
     return template.render(title="Signup", name=name)
 
