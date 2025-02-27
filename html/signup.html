@@ -1,7 +1,10 @@
 <%inherit file="base.html" />
+<head>
+    <link rel="stylesheet" type="text/css" href="/html/style.css">
+</head>
 <%block name="body">
     <div class="signup-popup">
-        <h2>Signup to be Freek Jones' friend</h2>
+        <h2>Signup to be Freek Jones' Friend</h2>
         <form id="signupForm" onsubmit="return validateSignup(event)" novalidate>
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="Enter your email">
@@ -17,7 +20,6 @@
             
             <button type="submit">Sign Up</button>
         </form>
-        <div id="errorMessages" style="color: red; margin-top: 10px;"></div>
     </div>
 
     <script>
@@ -30,40 +32,29 @@
             const realName = document.getElementById('realName').value.trim();
             const password = document.getElementById('password').value.trim();
             const dob = document.getElementById('dob').value.trim();
-            const errorMessages = document.getElementById('errorMessages');
-
-            // Clear previous error messages
-            errorMessages.innerHTML = '';
-
-            let isValid = true;
             let errors = [];
 
             // Validate email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email) {
                 errors.push("Email is required.");
-                isValid = false;
             } else if (!emailRegex.test(email)) {
                 errors.push("Please enter a valid email address.");
-                isValid = false;
             }
 
             // Validate real name
             if (!realName) {
                 errors.push("Real name is required.");
-                isValid = false;
             }
 
             // Validate password
             if (!password) {
                 errors.push("Password is required.");
-                isValid = false;
             }
 
             // Validate date of birth and age
             if (!dob) {
                 errors.push("Date of birth is required.");
-                isValid = false;
             } else {
                 const today = Date.now();
                 const birthDate = new Date(dob).getTime();
@@ -72,17 +63,16 @@
 
                 if (ageInYears < 13) {
                     errors.push("You must be at least 13 years old to sign up.");
-                    isValid = false;
                 }
             }
 
-            // Display errors if any
-            if (!isValid) {
-                errorMessages.innerHTML = errors.join("<br>");
+            // Show errors using alert()
+            if (errors.length > 0) {
+                alert(errors.join("\n")); // Show all errors in one popup
+                return false;
             }
 
-            // Return false to prevent form submission when invalid
-            return false;
+            return false; // Prevent form submission even if valid
         }
     </script>
 </%block>
