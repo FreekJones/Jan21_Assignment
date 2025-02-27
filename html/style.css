@@ -122,6 +122,23 @@ body
     border-radius: 4px;
 }
 
+.signup-popup .error-message {
+    color: red !important; /* Ensure red color applies */
+    font-size: 0.9em;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.signup-popup .welcome-banner {
+    color: blue !important; /* Ensure blue color applies */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;
+    display: none;
+    font-size: 1.2em;
+}
+
 /*#I used the following resources to help me with this project:
 #https://docs.cherrypy.dev/en/latest/pkg/cherrypy.lib.sessions.html
 #https://www.w3schools.com/html/

@@ -1,6 +1,23 @@
 <%inherit file="base.html" />
 <head>
     <link rel="stylesheet" type="text/css" href="/html/style.css">
+    <style>
+        .error-message {
+            color: red !important; /* Force red color */
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .welcome-banner {
+            color: blue !important; /* Force blue color */
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
+            font-size: 1.2em;
+        }
+    </style>
 </head>
 <%block name="body">
     <div class="signup-popup">
@@ -8,53 +25,72 @@
         <form id="signupForm" onsubmit="return validateSignup(event)" novalidate>
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="Enter your email">
-            
+            <div id="emailError" class="error-message"></div>
+
             <label for="real-name">Real Name</label>
             <input type="text" id="realName" name="realName" placeholder="Enter your real name">
-            
+            <div id="realNameError" class="error-message"></div>
+
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Enter your password">
-            
+            <div id="passwordError" class="error-message"></div>
+
             <label for="dob">Date of Birth</label>
             <input type="date" id="dob" name="dob">
-            
+            <div id="dobError" class="error-message"></div>
+
             <button type="submit">Sign Up</button>
         </form>
+        <div id="welcomeBanner" class="welcome-banner">Welcome!</div>
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById('welcomeBanner').style.display = 'none'; // Ensure it's hidden on load
+        });
+
         function validateSignup(event) {
-            // Prevent the form from submitting
-            event.preventDefault();
+            event.preventDefault(); // Prevent form submission
 
             // Get input values
             const email = document.getElementById('email').value.trim();
             const realName = document.getElementById('realName').value.trim();
             const password = document.getElementById('password').value.trim();
             const dob = document.getElementById('dob').value.trim();
-            let errors = [];
+            const welcomeBanner = document.getElementById('welcomeBanner');
+
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            welcomeBanner.style.display = 'none';
+
+            let hasError = false;
 
             // Validate email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email) {
-                errors.push("Email is required.");
+                document.getElementById('emailError').textContent = "Email is required.";
+                hasError = true;
             } else if (!emailRegex.test(email)) {
-                errors.push("Please enter a valid email address.");
+                document.getElementById('emailError').textContent = "Please enter a valid email address.";
+                hasError = true;
             }
 
             // Validate real name
             if (!realName) {
-                errors.push("Real name is required.");
+                document.getElementById('realNameError').textContent = "Real name is required.";
+                hasError = true;
             }
 
             // Validate password
             if (!password) {
-                errors.push("Password is required.");
+                document.getElementById('passwordError').textContent = "Password is required.";
+                hasError = true;
             }
 
             // Validate date of birth and age
             if (!dob) {
-                errors.push("Date of birth is required.");
+                document.getElementById('dobError').textContent = "Date of birth is required.";
+                hasError = true;
             } else {
                 const today = Date.now();
                 const birthDate = new Date(dob).getTime();
@@ -62,17 +98,18 @@
                 const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
 
                 if (ageInYears < 13) {
-                    errors.push("You must be at least 13 years old to sign up.");
+                    document.getElementById('dobError').textContent = "You must be at least 13 years old to sign up.";
+                    hasError = true;
                 }
             }
 
-            // Show errors using alert()
-            if (errors.length > 0) {
-                alert(errors.join("\n")); // Show all errors in one popup
-                return false;
-            }
+            // If errors exist, stop execution
+            if (hasError) return false;
 
-            return false; // Prevent form submission even if valid
+            // Show welcome banner if no errors
+            welcomeBanner.style.display = 'block';
+
+            return false; // Prevent form submission
         }
     </script>
 </%block>
