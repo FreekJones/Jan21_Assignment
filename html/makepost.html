@@ -1,0 +1,71 @@
+<%inherit file="base.html" />
+<head>
+    <link rel="stylesheet" type="text/css" href="/html/style.css">
+    <style>
+        .error-message { color: red; font-weight: bold; margin-top: 5px; }
+        .success-message { color: green; font-weight: bold; margin-top: 5px; }
+    </style>
+</head>
+<%block name="body">
+    <div class="makepost-container">
+        <h2>Create a New Post</h2>
+        <form id="makepostForm" enctype="multipart/form-data">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Enter a title">
+            <div id="titleError" class="error-message"></div>
+
+            <label for="image">Upload an Image</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <div id="imageError" class="error-message"></div>
+
+            <button type="button" onclick="submitPost()">Post my post!</button>
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+
+    <script>
+        function submitPost() {
+            const title = document.getElementById("title").value.trim();
+            const imageInput = document.getElementById("image");
+            const responseMessage = document.getElementById("responseMessage");
+
+            document.getElementById("titleError").textContent = "";
+            document.getElementById("imageError").textContent = "";
+            responseMessage.textContent = "";
+
+            let hasError = false;
+
+            if (!title) {
+                document.getElementById("titleError").textContent = "Title is required.";
+                hasError = true;
+            }
+
+            if (!imageInput.files.length) {
+                document.getElementById("imageError").textContent = "Please upload an image.";
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("image", imageInput.files[0]);
+
+            fetch("http://localhost:8080/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    document.location = "http://localhost:8080/";
+                } else {
+                    alert(data.reason);
+                }
+            })
+            .catch(() => {
+                alert("An error occurred while uploading.");
+            });
+        }
+    </script>
+</%block>

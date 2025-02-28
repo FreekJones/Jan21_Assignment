@@ -1,6 +1,14 @@
 <%inherit file="base.html" />
 <%block name="body">
     <h1>Welcome to the Home of Freek Jones</h1>
+
+    % if post_title:
+        <h2>Latest Post: ${post_title}</h2>
+    % else:
+        <h2>No posts yet</h2>
+    % endif
+
+    <img src="http://localhost:8080/mostrecent" alt="Recent Post Image" width="300">
 </%block>
 
 <!--#I used the following resources to help me with this project:

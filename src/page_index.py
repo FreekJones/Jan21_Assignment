@@ -4,9 +4,12 @@ import os
 srcdir = os.path.abspath(os.path.dirname(__file__))
 lookup = TemplateLookup(directories=[os.path.join(srcdir, "../html")])
 
-def render_index(name):
+def render_index(name, title="", filename=""):
+    """
+    Render the index page with a user's name, the most recent post title, and an image filename.
+    """
     template = lookup.get_template("index.html")
-    return template.render(title="Home Page", name=name)
+    return template.render(title="Home Page", name=name, post_title=title, post_image=filename)
 
 
 #I used the following resources to help me with this project:
