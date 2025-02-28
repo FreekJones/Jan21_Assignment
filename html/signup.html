@@ -3,13 +3,13 @@
     <link rel="stylesheet" type="text/css" href="/html/style.css">
     <style>
         .error-message {
-            color: red !important; /* Force red color */
+            color: red !important; 
             font-size: 0.9em;
             margin-top: 5px;
             font-weight: bold;
         }
         .welcome-banner {
-            color: blue !important; /* Force blue color */
+            color: blue !important; 
             font-weight: bold;
             text-align: center;
             padding: 10px;
@@ -46,26 +46,23 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById('welcomeBanner').style.display = 'none'; // Ensure it's hidden on load
+            document.getElementById('welcomeBanner').style.display = 'none'; 
         });
 
         function validateSignup(event) {
-            event.preventDefault(); // Prevent form submission
+            event.preventDefault(); 
 
-            // Get input values
             const email = document.getElementById('email').value.trim();
             const realName = document.getElementById('realName').value.trim();
             const password = document.getElementById('password').value.trim();
             const dob = document.getElementById('dob').value.trim();
             const welcomeBanner = document.getElementById('welcomeBanner');
 
-            // Clear previous errors
             document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
             welcomeBanner.style.display = 'none';
 
             let hasError = false;
 
-            // Validate email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email) {
                 document.getElementById('emailError').textContent = "Email is required.";
@@ -75,19 +72,16 @@
                 hasError = true;
             }
 
-            // Validate real name
             if (!realName) {
                 document.getElementById('realNameError').textContent = "Real name is required.";
                 hasError = true;
             }
 
-            // Validate password
             if (!password) {
                 document.getElementById('passwordError').textContent = "Password is required.";
                 hasError = true;
             }
 
-            // Validate date of birth and age
             if (!dob) {
                 document.getElementById('dobError').textContent = "Date of birth is required.";
                 hasError = true;
@@ -103,13 +97,11 @@
                 }
             }
 
-            // If errors exist, stop execution
             if (hasError) return false;
 
-            // Show welcome banner if no errors
             welcomeBanner.style.display = 'block';
 
-            return false; // Prevent form submission
+            return false; 
         }
     </script>
 </%block>

@@ -4,21 +4,18 @@ import random
 import page_index
 import page_signup
 import page_posts
-import page_makepost  # Import Mako rendering for makepost
+import page_makepost 
 import io
 import PIL.Image
 import json
 
-# List of first names for the greeting
+
 FIRST_NAMES = [
     "Emilia", "Mia", "Norma", "Mustafa", "Talia",
     "Axel", "Aiden", "Rosa", "Zaki", "Stevie"
 ]
 
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-recent_post = {"title": "", "filename": ""}  # Store the most recent post's metadata
+recent_post = {"title": "", "image_data": None, "image_format": None}  
 
 def check_image(data):
     """Check if the uploaded file is a valid image."""
@@ -37,7 +34,7 @@ class App:
     def index(self):
         """Displays the most recent post if available."""
         random_name = self.get_or_set_session_name()
-        return page_index.render_index(random_name, recent_post["title"], recent_post["filename"])
+        return page_index.render_index(random_name, recent_post["title"], "mostrecent")
 
     @cherrypy.expose
     def signup(self):
@@ -58,7 +55,7 @@ class App:
 
     @cherrypy.expose
     def upload(self, title, image):
-        """Handles post uploads."""
+        """Handles post uploads without saving to disk."""
         if not title.strip():
             return json.dumps({"ok": False, "reason": "Title cannot be empty."})
 
@@ -67,33 +64,23 @@ class App:
         if not check_image(image_data):
             return json.dumps({"ok": False, "reason": "Invalid image format or size."})
 
-        # Save the image
-        filename = os.path.join(UPLOAD_FOLDER, image.filename)
-        with open(filename, "wb") as f:
-            f.write(image_data)
-
-        # Store metadata
         recent_post["title"] = title.strip()
-        recent_post["filename"] = image.filename
+        recent_post["image_data"] = image_data  
+        recent_post["image_format"] = image.filename.split(".")[-1].lower()  
 
         return json.dumps({"ok": True})
 
     @cherrypy.expose
     def mostrecent(self):
-        """Serves the most recent uploaded image or a default question mark image."""
+        """Serves the most recent uploaded image from memory."""
         default_image_path = os.path.join("html", "images", "QuestionMark.jpg")
 
-        if not recent_post["filename"]:
+        if recent_post["image_data"] is None:
             cherrypy.response.headers["Content-Type"] = "image/jpeg"
             return open(default_image_path, "rb").read()
 
-        image_path = os.path.join(UPLOAD_FOLDER, recent_post["filename"])
-        if not os.path.exists(image_path):
-            cherrypy.response.headers["Content-Type"] = "image/jpeg"
-            return open(default_image_path, "rb").read()
-
-        cherrypy.response.headers["Content-Type"] = "image/jpeg"
-        return open(image_path, "rb").read()
+        cherrypy.response.headers["Content-Type"] = f"image/{recent_post['image_format']}"
+        return recent_post["image_data"]
 
     def get_or_set_session_name(self):
         """Handles session-based user greetings."""
